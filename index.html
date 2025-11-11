@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GlobaLife Hub</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header>
+  <h1>🌍 GlobaLife Hub</h1>
+  <p>Погода • Анекдоты • Новости • Путешествия • Здоровье и многое другое!</p>
+  <div id="admin-indicator" class="admin-indicator" style="display:none;">РЕЖИМ АДМИНА</div>
+</header>
+
+<div id="admin-panel" class="admin-panel" style="display:none;">
+  <h3>🛠️ Панель администратора</h3>
+  <button class="admin-btn" onclick="toggleEditMode()">✏️ Редактировать блоки</button>
+  <button class="admin-btn reset" onclick="resetCounters()">🔄 Сбросить все счётчики</button>
+  
+  <div>
+    <p><strong>Загрузить контент из файла:</strong></p>
+    <input type="file" id="content-file" accept=".json" />
+    <div id="file-drop">Перетащите сюда JSON-файл с новым контентом</div>
+  </div>
+</div>
+
+<!-- БЛОК: Погода -->
+<div class="block" data-block="weather" style="background: var(--weather-bg);">
+  <div class="block-header">
+    <div class="block-title">🌤️ Прогноз погоды</div>
+    <div class="counter" data-counter="weather">0</div>
+  </div>
+  <img class="block-image" src="./R.jpeg"  alt="Погода" style="max-width: 100px; max-width:100px;">
+  <div class="content" data-content="weather">Солнечно, +22°C. Лёгкий ветерок с запада.</div>
+</div>
+
+<!-- БЛОК: Анекдоты -->
+<div class="block" data-block="joke" style="background: var(--joke-bg);">
+  <div class="block-header">
+    <div class="block-title">😂 Интеллектуальные анекдоты</div>
+    <div class="counter" data-counter="joke">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1511795409834-1d2e8c5a4b8e?auto=format&fit=crop&w=600&h=160&q=80" alt="Анекдоты">
+  <div class="content" data-content="joke">Почему программисты не любят природу? Там слишком много bugs!</div>
+</div>
+
+<!-- БЛОК: Новости -->
+<div class="block" data-block="news" style="background: var(--news-bg);">
+  <div class="block-header">
+    <div class="block-title">📰 Международные новости</div>
+    <div class="counter" data-counter="news">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1495020689705-35212d25b50f?auto=format&fit=crop&w=600&h=160&q=80" alt="Новости">
+  <div class="content" data-content="news">• Подписано новое соглашение по климату.<br>• Открыт новый вид морских черепах в Тихом океане.</div>
+</div>
+
+<!-- БЛОК: Маркетплейсы -->
+<div class="block" data-block="market" style="background: var(--market-bg);">
+  <div class="block-header">
+    <div class="block-title">🛒 Маркетплейсы</div>
+    <div class="counter" data-counter="market">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&h=160&q=80" alt="Магазины">
+  <div class="content" data-content="market">
+    <a href="https://amazon.com" target="_blank">Amazon</a> • 
+    <a href="https://aliexpress.com" target="_blank">AliExpress</a> • 
+    <a href="https://ebay.com" target="_blank">eBay</a>
+  </div>
+</div>
+
+<!-- БЛОК: Авиабилеты -->
+<div class="block" data-block="flight" style="background: var(--flight-bg);">
+  <div class="block-header">
+    <div class="block-title">✈️ Авиабилеты</div>
+    <div class="counter" data-counter="flight">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&h=160&q=80" alt="Самолёт">
+  <div class="content" data-content="flight">Поиск дешёвых билетов на <a href="https://aviasales.ru" target="_blank">Aviasales</a></div>
+</div>
+
+<!-- БЛОК: Путёвки -->
+<div class="block" data-block="resort" style="background: var(--resort-bg);">
+  <div class="block-header">
+    <div class="block-title">🏖️ Путёвки на курорты</div>
+    <div class="counter" data-counter="resort">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1503551723145-6c04cb24f338?auto=format&fit=crop&w=600&h=160&q=80" alt="Пляж">
+  <div class="content" data-content="resort">Туры в Турцию, Италию, ОАЭ от <a href="https://level.travel" target="_blank">Level.Travel</a></div>
+</div>
+
+<!-- БЛОК: Литература -->
+<div class="block" data-block="book" style="background: var(--book-bg);">
+  <div class="block-header">
+    <div class="block-title">📚 Рассказы и повести</div>
+    <div class="counter" data-counter="book">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1463051873739-7a697c8a758a?auto=format&fit=crop&w=600&h=160&q=80" alt="Книги">
+  <div class="content" data-content="book">Сегодня читаем: «Мастер и Маргарита» — М. Булгаков</div>
+</div>
+
+<!-- БЛОК: ЗОЖ -->
+<div class="block" data-block="health" style="background: var(--health-bg);">
+  <div class="block-header">
+    <div class="block-title">🍏 Здоровый образ жизни</div>
+    <div class="counter" data-counter="health">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1490946140681-fec27eb62124?auto=format&fit=crop&w=600&h=160&q=80" alt="ЗОЖ">
+  <div class="content" data-content="health">Выпивайте стакан воды сразу после пробуждения.</div>
+</div>
+
+<!-- БЛОК: Партнёры -->
+<div class="block" data-block="partner" style="background: var(--partner-bg);">
+  <div class="block-header">
+    <div class="block-title">🤝 Партнёрские программы</div>
+    <div class="counter" data-counter="partner">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&h=160&q=80" alt="Партнёры">
+  <div class="content" data-content="partner">Присоединяйтесь к нашим партнёрским программам и зарабатывайте!</div>
+</div>
+
+<!-- БЛОК: Отзывы -->
+<div class="block" data-block="review" style="background: var(--review-bg);">
+  <div class="block-header">
+    <div class="block-title">💬 Отзывы о сайте</div>
+    <div class="counter" data-counter="review">0</div>
+  </div>
+  <img class="block-image" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&h=160&q=80" alt="Отзывы">
+  <div class="content" data-content="review">«Лучший сайт за всю мою жизнь!» — Марина, 34</div>
+</div>
+
+<footer>
+  <p>© 2025 GlobaLife Hub | Нажмите <strong>Ctrl + Shift + A</strong> для входа в админ-режим</p>
+  <p>Сайт работает полностью автономно. Все данные сохраняются в вашем браузере.</p>
+</footer>
+
+<script>
+  const ADMIN_SECRET = 'admin123';
+  const SITE_DATA_KEY = 'globa_site_data_v2';
+  const COUNTERS_KEY = 'globa_counters_v2';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadPersistedData();
+    initViewCounters();
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        enterAdminMode();
+      }
+    });
+    setupFileDrop();
+  });
+
+  function loadPersistedData() {
+    const saved = localStorage.getItem(SITE_DATA_KEY);
+    const counters = localStorage.getItem(COUNTERS_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      Object.entries(data).forEach(([blockId, content]) => {
+        const el = document.querySelector(`[data-content="${blockId}"]`);
+        if (el) el.innerHTML = content;
+      });
+    }
+    if (counters) {
+      const cnt = JSON.parse(counters);
+      Object.entries(cnt).forEach(([blockId, value]) => {
+        const el = document.querySelector(`[data-counter="${blockId}"]`);
+        if (el) el.textContent = value;
+      });
+    }
+  }
+
+  function saveAllData() {
+    const content = {};
+    document.querySelectorAll('[data-content]').forEach(el => {
+      content[el.dataset.content] = el.innerHTML;
+    });
+    localStorage.setItem(SITE_DATA_KEY, JSON.stringify(content));
+
+    const counters = {};
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      counters[el.dataset.counter] = el.textContent;
+    });
+    localStorage.setItem(COUNTERS_KEY, JSON.stringify(counters));
+  }
+
+  function initViewCounters() {
+    const blocks = document.querySelectorAll('.block');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const blockId = entry.target.dataset.block;
+          const counterEl = document.querySelector(`[data-counter="${blockId}"]`);
+          if (counterEl && !entry.target.dataset.viewed) {
+            counterEl.textContent = (parseInt(counterEl.textContent) || 0) + 1;
+            entry.target.dataset.viewed = 'true';
+            saveAllData();
+          }
+        }
+      });
+    }, { threshold: 0.25 });
+    blocks.forEach(block => observer.observe(block));
+  }
+
+  function enterAdminMode() {
+    const input = prompt('🔒 Введите пароль администратора:');
+    if (input === ADMIN_SECRET) {
+      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('admin-indicator').style.display = 'block';
+      alert('✅ Админ-режим включён!');
+    } else if (input !== null) {
+      alert('❌ Неверный пароль!');
+    }
+  }
+
+  function toggleEditMode() {
+    const contents = document.querySelectorAll('[data-content]');
+    const isEditable = contents[0].getAttribute('contenteditable') === 'true';
+    contents.forEach(el => {
+      el.contentEditable = !isEditable;
+    });
+    if (!isEditable) {
+      contents.forEach(el => {
+        const handler = () => { saveAllData(); };
+        el.addEventListener('blur', handler);
+        el.addEventListener('input', handler);
+      });
+    }
+  }
+
+  function resetCounters() {
+    if (!confirm('❗ Вы уверены, что хотите сбросить ВСЕ счётчики посещений?')) return;
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      el.textContent = '0';
+    });
+    saveAllData();
+    alert('✅ Счётчики сброшены!');
+  }
+
+  function setupFileDrop() {
+    const dropZone = document.getElementById('file-drop');
+    const fileInput = document.getElementById('content-file');
+
+    ['dragover', 'dragenter'].forEach(evt => {
+      dropZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const file = e.dataTransfer.files[0];
+      if (file && file.name.endsWith('.json')) {
+        readFileAsJSON(file);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) readFileAsJSON(file);
+    });
+  }
+
+  function readFileAsJSON(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        Object.entries(data).forEach(([key, value]) => {
+          const el = document.querySelector(`[data-content="${key}"]`);
+          if (el) el.innerHTML = value;
+        });
+        saveAllData();
+        alert('✅ Контент успешно загружен!');
+      } catch (err) {
+        alert('❌ Ошибка: файл не является корректным JSON');
+      }
+    };
+    reader.readAsText(file);
+  }
+</script>
+
+</body>
+</html>
